@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <title>நன்றி!</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    body {
+      background: linear-gradient(to right, #a8edea, #fed6e3);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .thankyou-box {
+      background-color: #ffffffcc;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 20px;
+      color: #34495e;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      background-color: #27ae60;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background-color: #219150;
+    }
+  </style>
+</head>
+<body>
+  <div class="thankyou-box">
+    <h1>🙏 நன்றி!</h1>
+    <p>உங்கள் தகவலுக்கு நன்றி. உங்கள் விளைச்சல் கணிப்பு வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!</p>
+    <a href="{{ url_for('language') }}" class="btn">மீண்டும் செல்ல</a>
+  </div>
+
+  <!-- Tamil TTS -->
+  <script>
+    const message = "உங்கள் தகவலுக்கு நன்றி. உங்கள் பயிர் விளைச்சல் கணிப்பு வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!";
+    const utterance = new SpeechSynthesisUtterance(message);
+    utterance.lang = "ta-IN";
+    speechSynthesis.speak(utterance);
+  </script>
+</body>
+</html>

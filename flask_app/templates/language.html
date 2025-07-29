@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Language</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-image: url('{{ url_for("static", filename="images/farming_bg.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            padding-top: 150px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 5px #333;
+        }
+
+        form button {
+            padding: 15px 40px;
+            margin: 20px;
+            font-size: 20px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌾 Choose Your Language / உங்கள் மொழியை தேர்வுசெய்க 🌾</h1>
+    <form action="{{ url_for('predictor') }}" method="POST">
+        <button name="language" value="en">English</button>
+        <button name="language" value="ta">தமிழ்</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <title>🌾 பயிர் விளைச்சல் கணிப்பான்</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #fceabb, #f8b500);
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+
+    .container {
+      background: #ffffffdd;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #34495e;
+    }
+
+    label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+    }
+
+    button {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #219150;
+    }
+
+    .prediction {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #e74c3c;
+    }
+
+    .chart-container {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌾 பயிர் விளைச்சல் கணிப்பு</h1>
+    <form action="{{ url_for('predict', lang='ta') }}" method="POST">
+      <label>மழைப்பொழிவு (மிமீ):</label>
+      <input type="number" step="any" name="rainfall" required>
+
+      <label>மண்ணின் தரம்:</label>
+      <input type="number" step="any" name="soil_quality" required>
+
+      <label>விவசாய நில அளவு (ஹெக்டேர்):</label>
+      <input type="number" step="any" name="farm_size" required>
+
+      <label>வெயிலின் நேரம் (மணிநேரம்):</label>
+      <input type="number" step="any" name="sunlight" required>
+
+      <label>உரம் பயன்படுத்தியது (கிலோ):</label>
+      <input type="number" step="any" name="fertilizer" required>
+
+      <button type="submit">🌱 விளைச்சலை கணிக்க</button>
+    </form>
+
+    {% if prediction_text %}
+      <div class="prediction">{{ prediction_text }}</div>
+
+      <!-- Tamil TTS -->
+      <script>
+        const prediction = "{{ prediction_text }}";
+        let tamilPrediction = prediction.replace("quintals", "கிண்டால்கள்");
+
+        const utterance = new SpeechSynthesisUtterance("உங்கள் பயிர் விளைச்சல் கணிப்பு: " + tamilPrediction);
+        utterance.lang = "ta-IN";
+        speechSynthesis.speak(utterance);
+      </script>
+
+      <!-- Chart -->
+      <div class="chart-container">
+        <canvas id="yieldChart"></canvas>
+      </div>
+
+      <script>
+        const ctx = document.getElementById('yieldChart').getContext('2d');
+        const yieldChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['மழை', 'மண் தரம்', 'நில அளவு', 'வெயில் நேரம்', 'உரம்'],
+            datasets: [{
+              label: 'உள்ளீடு மதிப்புகள்',
+              data: [
+                parseFloat("{{ request.form['rainfall'] }}"),
+                parseFloat("{{ request.form['soil_quality'] }}"),
+                parseFloat("{{ request.form['farm_size'] }}"),
+                parseFloat("{{ request.form['sunlight'] }}"),
+                parseFloat("{{ request.form['fertilizer'] }}")
+              ],
+              backgroundColor: ['#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#e74c3c'],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      </script>
+    {% endif %}
+  </div>
+</body>
+</html>
