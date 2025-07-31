@@ -45,5 +45,7 @@ def thankyou(lang):
     template = 'thankyou.html' if lang == 'en' else 'thankyou_ta.html'
     return render_template(template)
 
+import os
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug_mode = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
+    app.run(debug=debug_mode)
